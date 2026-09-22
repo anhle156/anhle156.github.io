@@ -134,7 +134,7 @@ h1 .sub{display:block;font-size:clamp(.95rem,1.6vw,1.15rem);font-weight:400;lett
   color:var(--ink);overflow:hidden;transition:border-color .2s,transform .2s}
 .card:hover{text-decoration:none;border-color:var(--cyan);transform:translateY(-3px)}
 .card .shot{position:relative;border-bottom:1px solid var(--line)}
-.card img{width:100%;aspect-ratio:1600/1220;object-fit:contain;display:block;background:var(--bg)}
+.card img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;background:#fff}
 .card .tag{position:absolute;top:.6rem;left:.6rem;font-family:var(--mono);font-size:.58rem;
   letter-spacing:.13em;text-transform:uppercase;padding:.25rem .5rem;
   background:color-mix(in srgb,var(--bg-2) 82%,transparent);color:var(--cyan);border:1px solid var(--cyan-dim);backdrop-filter:blur(4px)}
@@ -241,17 +241,17 @@ footer .r{margin-left:auto}
   <div class="cards">
 
     <a class="card" href="https://anhle156.github.io/implicit-elastic-fwi/">
-      <div class="shot"><img src="assets/proj_elastic.jpg" width="1600" height="1220" alt="True Marmousi2 P-wave speed above the model recovered from random weights, stacked at the same colour scale"><span class="tag">Solo</span></div>
+      <div class="shot"><img src="assets/proj_elastic.png" alt="Recovered elastic model: P-wave speed, S-wave speed and density panels compared against the true Marmousi2 model"><span class="tag">Solo</span></div>
       <div class="cb">
         <h3>Elastic full-waveform inversion</h3>
         <p class="why">Three coupled parameters, from a random start.</p>
-        <p>A coordinate network maps position to <code>vp, vs, rho</code>; Devito solves the elastic wave equation with a hand-written adjoint. From a random start on Marmousi2, continuation 1.0&thinsp;&rarr;&thinsp;1.5&thinsp;&rarr;&thinsp;2.5&nbsp;Hz with gradient clipping cuts P-wave error to a quarter of the start's and S-wave error to a fifth. A pure-JAX autodiff solver swaps in behind the same interface and agrees to 0.9&nbsp;%.</p>
+        <p>A coordinate network maps position to <code>vp, vs, rho</code>; Devito solves the elastic wave equation with a hand-written adjoint. From a random start on Marmousi2, continuation 1.0&thinsp;&rarr;&thinsp;1.5&thinsp;&rarr;&thinsp;2.5&nbsp;Hz cuts P-wave error to a third and S-wave below a quarter. A pure-JAX autodiff solver swaps in behind the same interface and agrees to 0.9&nbsp;%.</p>
         <span class="go">Results &amp; figures &rarr;</span>
       </div>
     </a>
 
     <a class="card" href="https://anhle156.github.io/implicit-acoustic-fwi/">
-      <div class="shot"><img src="assets/proj_acoustic.jpg" width="1600" height="1220" alt="True Marmousi P-wave speed above the acoustic inversion recovered from random weights"><span class="tag">Team of two</span></div>
+      <div class="shot"><img src="assets/proj_acoustic.jpg" alt="Inverted P-wave velocity model of Marmousi recovered from a random start"><span class="tag">Team of two</span></div>
       <div class="cb">
         <h3>Acoustic full-waveform inversion</h3>
         <p class="why">The predecessor: two differentiable components, composed.</p>
@@ -261,7 +261,7 @@ footer .r{margin-left:auto}
     </a>
 
     <a class="card" href="https://github.com/anhle156/implicit-pde-inversion">
-      <div class="shot"><img src="assets/proj_pde.gif" width="1000" height="762" alt="Animation sweeping 26 cross sections, the inferred field filling in behind a moving scan line"><span class="tag">In preparation</span></div>
+      <div class="shot"><img src="assets/proj_pde.gif" alt="Animation sweeping 26 cross sections, the inferred field filling in behind a moving scan line"><span class="tag">In preparation</span></div>
       <div class="cb">
         <h3>PDE coefficient inversion</h3>
         <p class="why">How little extra information closes an ill-posed problem.</p>
