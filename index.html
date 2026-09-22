@@ -76,8 +76,9 @@ section{padding:3.6rem 0 0}
 .lede{font-size:1.05rem;color:var(--muted);max-width:56rem;margin-bottom:1.6rem}
 
 /* ---- hero ---- */
-.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:3rem;align-items:center;padding-top:1.2rem}
-@media(max-width:940px){.hero{grid-template-columns:1fr;gap:2rem}}
+.hero{display:grid;grid-template-columns:1fr;gap:2.4rem;padding-top:1.2rem}
+.hero .intro{max-width:82ch}
+@media(max-width:940px){.hero{gap:2rem}}
 .kv{border-top:1px solid var(--line-2);margin-bottom:1.8rem}
 .kv .row{display:grid;grid-template-columns:7.5rem 1fr;gap:1rem;padding:.5rem 0;
   border-bottom:1px solid var(--line);font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase}
@@ -176,7 +177,7 @@ footer .r{margin-left:auto}
 <main id="top">
 
 <section class="hero" style="padding-top:1.2rem">
-  <div>
+  <div class="intro">
     <div class="kv">
       <div class="row"><span>Position</span><span>PhD student, North Dakota State University</span></div>
       <div class="row"><span>Field</span><span>Inverse problems &middot; differentiable scientific computing</span></div>
@@ -240,17 +241,17 @@ footer .r{margin-left:auto}
   <div class="cards">
 
     <a class="card" href="https://anhle156.github.io/implicit-elastic-fwi/">
-      <div class="shot"><img src="assets/proj_elastic.png" alt="Recovered elastic model: P-wave speed, S-wave speed and density panels compared against the true Marmousi2 model"><span class="tag">Solo</span></div>
+      <div class="shot"><img src="assets/proj_elastic.png" width="1600" height="1000" alt="True Marmousi2 P-wave speed above the model recovered from random weights, side by side at the same colour scale"><span class="tag">Solo</span></div>
       <div class="cb">
         <h3>Elastic full-waveform inversion</h3>
         <p class="why">Three coupled parameters, from a random start.</p>
-        <p>A coordinate network maps position to <code>vp, vs, rho</code>; Devito solves the elastic wave equation with a hand-written adjoint. From a random start on Marmousi2, continuation 1.0&thinsp;&rarr;&thinsp;1.5&thinsp;&rarr;&thinsp;2.5&nbsp;Hz cuts P-wave error to a third and S-wave below a quarter. A pure-JAX autodiff solver swaps in behind the same interface and agrees to 0.9&nbsp;%.</p>
+        <p>A coordinate network maps position to <code>vp, vs, rho</code>; Devito solves the elastic wave equation with a hand-written adjoint. From a random start on Marmousi2, continuation 1.0&thinsp;&rarr;&thinsp;1.5&thinsp;&rarr;&thinsp;2.5&nbsp;Hz with gradient clipping cuts P-wave error to a quarter of the start's and S-wave error to a fifth. A pure-JAX autodiff solver swaps in behind the same interface and agrees to 0.9&nbsp;%.</p>
         <span class="go">Results &amp; figures &rarr;</span>
       </div>
     </a>
 
     <a class="card" href="https://anhle156.github.io/implicit-acoustic-fwi/">
-      <div class="shot"><img src="assets/proj_acoustic.jpg" alt="Inverted P-wave velocity model of Marmousi recovered from a random start"><span class="tag">Team of two</span></div>
+      <div class="shot"><img src="assets/proj_acoustic.png" width="1600" height="1000" alt="True Marmousi P-wave speed above the acoustic inversion recovered from random weights"><span class="tag">Team of two</span></div>
       <div class="cb">
         <h3>Acoustic full-waveform inversion</h3>
         <p class="why">The predecessor: two differentiable components, composed.</p>
