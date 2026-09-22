@@ -185,7 +185,7 @@ footer .r{margin-left:auto}
     <h1>Anh Le
       <span class="sub">inverse problems</span>
     </h1>
-    <p class="tagline">I recover fields that cannot be measured, from the traces they leave on things that can &mdash; <em>a seismogram at the surface for a velocity model kilometres down; the motion of a free surface for the shape of the boundary beneath it.</em></p>
+    <p class="tagline">I recover fields nobody can measure, from the traces they leave on things you can &mdash; <em>a seismogram at the surface for a velocity model kilometres down.</em></p>
     <div class="cta">
       <a class="btn pri" href="#work">See the work</a>
       <a class="btn" href="https://github.com/anhle156">GitHub</a>
@@ -203,10 +203,9 @@ footer .r{margin-left:auto}
   <div class="sechead"><span class="n">01</span><h2>About</h2><span class="note">the inverse direction</span></div>
   <div class="two">
     <div class="prose">
-      <p>I am a PhD student at North Dakota State University. My work is about <em>the inverse direction of physics</em>. A governing equation tells you what a known medium would do; I am interested in the harder question underneath it &mdash; given what was observed, what was the medium?</p>
-      <p>These problems are ill-posed almost by definition. Observations are sparse and sit on a boundary, many different media explain them about equally well, and the real work is deciding what extra information closes the gap &mdash; then being explicit about what stays undetermined.</p>
-      <p>Two things run through all of it. The unknown field is <em>a coordinate network rather than a grid of values</em>, which regularises by construction and unhooks the number of unknowns from the mesh. And the gradient comes from <em>the physics itself</em> &mdash; an adjoint-state solve, or automatic differentiation where the solver permits &mdash; never from a surrogate trained to imitate it.</p>
-      <p>I care about the parts that are not the method, too: gradient checks against finite differences, adjoint tests, controls that are supposed to fail, and writing down plainly what a result does <em>not</em> show.</p>
+      <p>My work is <em>the inverse direction of physics</em>: a governing equation says what a known medium would do; I ask what medium produced what was observed.</p>
+      <p>They are ill-posed: sparse observations, many media that fit them about equally well. The work is choosing what extra information closes the gap, and saying what stays undetermined.</p>
+      <p>Throughout, the unknown is <em>a coordinate network rather than a grid of values</em> and the gradient comes from <em>the physics itself</em> &mdash; an adjoint solve, or autodiff where the solver permits &mdash; never a surrogate.</p>
     </div>
     <div class="side">
       <h4>Interests</h4>
@@ -226,12 +225,12 @@ footer .r{margin-left:auto}
 
 <section id="method">
   <div class="sechead"><span class="n">02</span><h2>How I set these problems up</h2><span class="note">one recipe &middot; three PDEs</span></div>
-  <p class="lede">The projects differ in the physics and in how the gradient is obtained. The scaffolding is deliberately identical, so comparing them means something.</p>
+  <p class="lede">Different physics, different gradients, deliberately identical scaffolding &mdash; so comparing them means something.</p>
   <div class="steps">
-    <div class="step"><span class="n">01</span><div><b>The unknown is a network</b><p>The field is written <code>x &rarr; m(x)</code> as a small coordinate network, and the weights are the optimisation variables. Grid-scale noise is not representable, so the parameterisation regularises on its own rather than through a penalty term that has to be tuned.</p></div></div>
-    <div class="step"><span class="n">02</span><div><b>The forward model stays what it is</b><p>Production solvers are stencil codes no ML framework can differentiate. Rather than replace them with something learnable, I put a typed differentiable boundary around them and supply the gradient by hand.</p></div></div>
-    <div class="step"><span class="n">03</span><div><b>The gradient is the physics</b><p>An adjoint-state solve for the wave equations; reverse-mode autodiff where the solver is written in JAX. Where both exist I run both and check they agree &mdash; the most useful test I have.</p></div></div>
-    <div class="step"><span class="n">04</span><div><b>Start from nothing</b><p>No hand-built initial model. The network is initialised at random, which is the case that tests whether the inversion works rather than whether the starting guess was already close.</p></div></div>
+    <div class="step"><span class="n">01</span><div><b>The unknown is a network</b><p>The field is <code>x &rarr; m(x)</code>: a small coordinate network whose weights are the unknowns. Grid-scale noise is not representable, so it regularises itself.</p></div></div>
+    <div class="step"><span class="n">02</span><div><b>The forward model stays what it is</b><p>Production stencil codes cannot be differentiated by an ML framework, so I wrap them in a typed differentiable boundary and supply the gradient by hand.</p></div></div>
+    <div class="step"><span class="n">03</span><div><b>The gradient is the physics</b><p>An adjoint-state solve, or autodiff where the solver is JAX. Where both exist I run both and check they agree.</p></div></div>
+    <div class="step"><span class="n">04</span><div><b>Start from nothing</b><p>Random initialisation, no hand-built starting model &mdash; the case that tests the inversion rather than the guess.</p></div></div>
   </div>
 </section>
 
@@ -245,7 +244,7 @@ footer .r{margin-left:auto}
       <div class="cb">
         <h3>Elastic full-waveform inversion</h3>
         <p class="why">Three coupled parameters, from a random start.</p>
-        <p>A coordinate network maps position to <code>vp, vs, rho</code>; the elastic wave equation is solved in Devito with a hand-written adjoint. Multiscale continuation 1.0&thinsp;&rarr;&thinsp;1.5&thinsp;&rarr;&thinsp;2.5&nbsp;Hz on Marmousi2 takes P-wave error to a third of the random start's and S-wave error below a quarter, with no starting model. A pure-JAX solver with autodiff gradients swaps in behind the same interface; after 2000 optimiser steps the two agree to 0.9&nbsp;%.</p>
+        <p>A coordinate network maps position to <code>vp, vs, rho</code>; Devito solves the elastic wave equation with a hand-written adjoint. From a random start on Marmousi2, continuation 1.0&thinsp;&rarr;&thinsp;1.5&thinsp;&rarr;&thinsp;2.5&nbsp;Hz cuts P-wave error to a third and S-wave below a quarter. A pure-JAX autodiff solver swaps in behind the same interface and agrees to 0.9&nbsp;%.</p>
         <span class="go">Results &amp; figures &rarr;</span>
       </div>
     </a>
@@ -255,7 +254,7 @@ footer .r{margin-left:auto}
       <div class="cb">
         <h3>Acoustic full-waveform inversion</h3>
         <p class="why">The predecessor: two differentiable components, composed.</p>
-        <p>Seismic FWI split into a JAX network and a Devito wave solver carrying different dependency stacks, differentiated end to end across the boundary. The chain rule is assembled from two independently written gradients &mdash; autodiff on one side, an adjoint-state solve on the other &mdash; and checked against finite differences. Built with Nhat Tran for the Tesseract Hackathon 2026.</p>
+        <p>A JAX network and a Devito wave solver with incompatible dependency stacks, differentiated end to end across the boundary: autodiff on one side, an adjoint-state solve on the other, checked against finite differences. Built with Nhat Tran for the Tesseract Hackathon 2026.</p>
         <span class="go">Results &amp; figures &rarr;</span>
       </div>
     </a>
@@ -265,7 +264,7 @@ footer .r{margin-left:auto}
       <div class="cb">
         <h3>PDE coefficient inversion</h3>
         <p class="why">How little extra information closes an ill-posed problem.</p>
-        <p>The unknown is a coefficient field inside a depth-averaged momentum balance; the observable is the velocity of the free surface above it. Physics alone fixes the shape but not the scale, one integral constraint fixes the scale, and one or two point measurements remove what is left &mdash; so a handful of measurements stands in for a dense survey. Quantitative figures follow the manuscript.</p>
+        <p>The unknown is a coefficient field in a depth-averaged momentum balance; the observable is the free surface above it. Physics fixes the shape, one integral constraint the scale, and one or two point measurements the rest &mdash; a handful of measurements instead of a dense survey.</p>
         <span class="go">Repository &rarr;</span>
       </div>
     </a>
